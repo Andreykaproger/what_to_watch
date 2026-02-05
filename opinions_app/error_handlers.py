@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify
 
 from . import app,db
 
@@ -10,3 +10,18 @@ def page_not_found(e):
 def internal_error(e):
     db.session.rollback()
     return render_template('500.html'), 500
+
+class InvalidAPIUsage(Exception):
+    status_code = 400
+    def __init__(self, message, status_code=None):
+        super().__init__()
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+
+    def to_dict(self):
+        return dict(message=self.message)
+
+@app.errorhandler(InvalidAPIUsage)
+def invalid_api_usage(error):
+    return jsonify(error.to_dict()), error.status_code
