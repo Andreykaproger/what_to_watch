@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, URLField, SubmitField
 from wtforms.validators import DataRequired, Length, Optional
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -14,6 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'my secret key'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Модель БД
 class Opinion(db.Model):
@@ -22,6 +24,7 @@ class Opinion(db.Model):
     text = db.Column(db.Text, unique=True, nullable=False)
     source = db.Column(db.String(256))
     timestamp = db.Column(db.DateTime, index = True, default=datetime.utcnow)
+    added_by = db.Column(db.String(64))
 
 # Форма добавления мнения
 class OpinionForm(FlaskForm):
