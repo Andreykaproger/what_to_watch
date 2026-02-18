@@ -1,6 +1,54 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, URLField, SubmitField
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms import StringField, TextAreaField, URLField, SubmitField, EmailField
+from wtforms.fields.simple import PasswordField
+from wtforms.validators import DataRequired, Length, Optional, EqualTo
+
+
+class RegisterForm(FlaskForm):
+    username = StringField(
+        'Введите никнейм',
+        validators= [
+            DataRequired(message='Обязательное поле'),
+            Length(3,64)
+        ]
+    )
+    email = EmailField(
+        'Введите адрес электронной почты',
+        validators= [
+            DataRequired('Обязательное поле'),
+        ]
+    )
+    password = PasswordField(
+        'Введите пароль',
+        validators= [
+            DataRequired('Обязательное поле'),
+            Length(6,128),
+        ]
+    )
+    confirm_password = PasswordField(
+        'Подтвердите пароль',
+        validators= [
+            DataRequired('Обязательное поле'),
+            EqualTo('password')
+        ]
+    )
+    submit = SubmitField('Зарегистрироваться')
+
+class LoginForm(FlaskForm):
+    email = EmailField(
+        'Введите адрес электронной почты',
+        validators= [
+            DataRequired('Обязательное поле'),
+        ]
+    )
+    password = PasswordField(
+        'Введите пароль',
+        validators= [
+            DataRequired('Обязательное поле'),
+            Length(6,128),
+        ]
+    )
+    submit = SubmitField('Войти')
 
 class OpinionForm(FlaskForm):
     """Форма добавления мнения"""
