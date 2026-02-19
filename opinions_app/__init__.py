@@ -13,7 +13,7 @@ login_manager.login_view = 'login'
 
 migrate = Migrate(app, db)
 
-from . import cli_commands, error_handlers, views, api_views
+from . import cli_commands, error_handlers, views, api_views, decorators
 from .models import User
 
 @login_manager.user_loader

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} Авторизация {% endblock %}
+{% block content %}
+<main>
+  <section class="container my-5">
+    <div class="row">
+      <h1> Авторизация </h1>
+      <div class="col-12 col-lg-7 my-5">
+        <form method="POST" novalidate>
+          {{ form.csrf_token }}
+          {{ form.email(class="form-control form-control-lg py-3 mb-3", placeholder=form.email.label.text) }}
+          <p>
+            {% if form.email.errors %}
+              {% for error in form.email.errors %}
+                <span style="color: red">{{ error }}</span>
+              {% endfor %}
+            {% endif %}
+          </p>
+          {{ form.password(class="form-control form-control-lg py-3 mb-3", placeholder=form.password.label.text, rows="3", cols="40")}}
+          <p>
+            {% if form.password.errors %}
+              {% for error in form.password.errors %}
+                <span style="color: red">{{ error }}</span>
+              {% endfor %}
+            {% endif %}
+          </p>
+          {{ form.submit(class="button px-5 py-3 btn") }}
+        </form>
+        <p class="py-3 mb-3">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </p>
+        <span class="nav-text me-4"> Впервые на сайте?
+          <a href="{{ url_for('register_view')}}"> Регистрация </a>
+        </span>
+      </div>
+      <div class="col-12 col-lg-5">
+        <img
+          class="img-fluid mx-auto d-block"
+          src="{{ url_for('static', filename='img/illustration.png') }}"
+          alt=""
+        />
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -17,6 +17,17 @@
           Ссылка для друзей:
           <a href="{{ url_for('opinion_view', id=opinion.id, _exteranl = True) }}">{{ url_for('opinion_view', id=opinion.id, _external=True) }}</a>
         </p>
+        <p>
+          Автор мнения: {{ opinion.author.username }}
+        </p>
+        {% if current_user.is_authenticated and opinion.user_id == current_user.id %}
+          <p>
+            Редактировать мнение
+          </p>
+          <p>
+            <span style="color: red"> Удалить мнение </span>
+          </p>
+        {% endif %}
       </div>
       <div class="col-12 col-lg-5">
         <img class="img-fluid mx-auto d-block" src="{{ url_for('static', filename='img/illustration.png') }}" alt="" />

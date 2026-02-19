@@ -1,23 +1,42 @@
 <header class="pt-3">
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-    <a class="navbar-brand" href="{{ url_for('index_view') }}">
-        <img src="{{ url_for('static', filename='img/logo.svg') }}" height="50" class="" alt="" />
-    </a>
-      <div class="d-flex justify-content-end">
-        <ul class="nav nav-pills">
-          <li class="nav-item pe-5">
-            <a class="nav-link" href="{{ url_for('add_opinion_view') }}">
-              Добавить мнение о фильме
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('index_view') }}">
-              Хочу другой фильм
-            </a>
-          </li>
-        </ul>
+
+      <!-- ЛЕВАЯ ЧАСТЬ -->
+      <div class="d-flex align-items-center">
+
+        <a class="navbar-brand me-4" href="{{ url_for('index_view') }}">
+          <img src="{{ url_for('static', filename='img/logo.svg') }}" height="50" alt="Logo" />
+        </a>
+
+        {% if current_user.is_authenticated %}
+          <span class="nav-text me-4">
+            Профиль: {{ current_user.username }}
+          </span>
+          <a class="nav-link" href="{{ url_for('logout_view') }}">
+            Выйти
+          </a>
+        {% else %}
+          <a class="nav-link" href="{{ url_for('login_view') }}">
+            Войти
+          </a>
+        {% endif %}
+
       </div>
+
+      <!-- ПРАВАЯ ЧАСТЬ -->
+      <div class="d-flex align-items-center">
+
+        <a class="nav-link me-4" href="{{ url_for('add_opinion_view') }}">
+          Добавить мнение о фильме
+        </a>
+
+        <a class="nav-link" href="{{ url_for('index_view') }}">
+          Хочу другой фильм
+        </a>
+
+      </div>
+
     </div>
   </nav>
 </header>

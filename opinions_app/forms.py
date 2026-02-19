@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, URLField, SubmitField, EmailField
 from wtforms.fields.simple import PasswordField
-from wtforms.validators import DataRequired, Length, Optional, EqualTo
+from wtforms.validators import DataRequired, Length, Optional, EqualTo, Email
 
 
 class RegisterForm(FlaskForm):
@@ -12,10 +12,11 @@ class RegisterForm(FlaskForm):
             Length(3,64)
         ]
     )
-    email = EmailField(
+    email = StringField(
         'Введите адрес электронной почты',
         validators= [
             DataRequired('Обязательное поле'),
+            Email('Неверная форма E-Mail'),
         ]
     )
     password = PasswordField(
@@ -35,10 +36,11 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Зарегистрироваться')
 
 class LoginForm(FlaskForm):
-    email = EmailField(
+    email = StringField(
         'Введите адрес электронной почты',
         validators= [
             DataRequired('Обязательное поле'),
+            Email('Неверная форма E-Mail'),
         ]
     )
     password = PasswordField(
@@ -59,7 +61,8 @@ class OpinionForm(FlaskForm):
     )
     text = TextAreaField(
         'Напишите мнение',
-        validators=[DataRequired(message="Обязательное поле")],
+        validators=[DataRequired(message="Обязательное поле"),
+                    Length(1,)],
     )
     source = URLField(
         'Добавьте ссылку на подробный обзор фильма',
