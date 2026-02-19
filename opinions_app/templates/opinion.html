@@ -18,14 +18,14 @@
           <a href="{{ url_for('opinion_view', id=opinion.id, _exteranl = True) }}">{{ url_for('opinion_view', id=opinion.id, _external=True) }}</a>
         </p>
         <p>
-          Автор мнения: {{ opinion.author.username }}
+          Автор мнения: <a href="{{ url_for('user_profile_view', username=opinion.author.username) }}"> {{ opinion.author.username }} </a>
         </p>
         {% if current_user.is_authenticated and opinion.user_id == current_user.id %}
           <p>
-            Редактировать мнение
+            <a style="color: blue" href="{{ url_for('redact_opinion_view', id=opinion.id) }}"> Редактировать мнение </a>
           </p>
           <p>
-            <span style="color: red"> Удалить мнение </span>
+            <a style="color: red" href="{{ url_for('redact_opinion_view', id=opinion.id) }}"> Удалить мнение </a>
           </p>
         {% endif %}
       </div>

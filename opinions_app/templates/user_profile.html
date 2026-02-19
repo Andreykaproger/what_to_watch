@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Профиль {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="profile-header">
+        <h2>Профиль пользователя: {{ user.username }}</h2>
+        <p>Email: {{ user.email }}</p>
+<!--        {% if user.role %}-->
+<!--            <p>Роль: <strong>{{ user.role }}</strong></p>-->
+<!--        {% endif %}-->
+        <hr>
+    </div>
+    {% if current_user.is_authenticated and current_user.id == user.id or current_user.is_admin()%}
+      {% set owner = True %}
+      <h4>Мои мнения</h4>
+    {% else %}
+      {% set owner = False %}
+      <h4>Все мнения пользователя</h4>
+    {% endif %}
+
+    {% if opinions %}
+        <ul class="list-group">
+        {% for opinion in opinions %}
+            <li class="list-group-item">
+                {{ opinion.tittle }}
+                <br>
+                <small class="text-muted">«{{ opinion.text | truncate(100) }}»
+                  <a href="{{ url_for('opinion_view', id=opinion.id) }}"
+                    class="text-muted">
+                      Читать далее
+                  </a>
+                </small>
+                <br>
+                <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
+                {% if owner %}
+                  <br>
+                  <a href="{{ url_for('redact_opinion_view', id=opinion.id) }}"
+                    class="text-muted">
+                      Редактировать мнение
+                  </a>
+                  <br>
+                  <a href="{{ url_for('delete_opinion_view', id=opinion.id) }}"
+                    class="text-muted">
+                      Удалить мнение
+                  </a>
+                {% endif %}
+                <br>
+                <small class="text-muted">  </small>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Пока нет мнений</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -103,7 +103,7 @@ def delete_opinion_view(id):
     db.session.delete(opinion)
     db.session.commit()
 
-    return redirect(url_for('opinion_view', id = id))
+    return redirect(url_for('opinion_view',id=id))
 
 @app.route('/redact_opinion/<int:id>', methods=['GET','POST'])
 def redact_opinion_view(id):
