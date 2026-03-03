@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Панель администратора{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="profile-header">
+        <h2>Профиль администратора: {{ current_user.username }}</h2>
+        <hr>
+    </div>
+
+  <p> <a href="{{ url_for('admin.users_list_view') }}"> Количество пользователей: {{ users_count }} </a> </p>
+  <p> <a href="{{ url_for('admin.blocked_users_list_view') }}"> Количество заблокированных пользователей: {{ blocked_users }} </a> </p>
+  <hr>
+  <p> <a href="{{ url_for('admin.opinions_list_view') }}"> Количество опубликованных мнений: {{ opinions_count }} </a> </p>
+  <p> <a href="{{ url_for('admin.pending_opinions_view') }}"> Количество мнений, ожидающих подтверждения: {{ pending_opinions }} </a> </p>
+</div>
+{% endblock %}

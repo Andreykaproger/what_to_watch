@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Модерация мнений {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="profile-header">
+            <p>
+                <a class="nav-link" href="{{ url_for('admin.admin_panel_dashboard_view') }}">
+                    Перейти в панель администратора
+                </a>
+            </p>
+        <hr>
+    </div>
+      <h4> Все мнения, ожидающие подтверждения </h4>
+
+
+    {% if pending_opinions %}
+        <ul class="list-group">
+        {% for opinion in pending_opinions %}
+            <li class="list-group-item">
+                {{ opinion.tittle }}
+                <br>
+                <small class="text-muted">«{{ opinion.text | truncate(100) }}»
+                  <a href="{{ url_for('opinions.opinion_view', id=opinion.id) }}"
+                    class="text-muted">
+                      Читать полностью
+                  </a>
+                </small>
+                <br>
+                <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
+                  <br>
+                  <a href="{{ url_for('admin.accept_opinion', id=opinion.id) }}"
+                    class="text-muted">
+                      Опубликовать мнение
+                  </a>
+                  <br>
+                    <a href="{{ url_for('admin.reject_opinion_view', id=opinion.id) }}"
+                       class="text-danger">
+                        Отклонить мнение
+                    </a>
+                <br>
+                <small class="text-muted">  </small>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Пока нет новых мнений</p>
+    {% endif %}
+</div>
+{% endblock %}

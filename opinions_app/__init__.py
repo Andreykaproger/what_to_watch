@@ -19,3 +19,14 @@ from .models import User
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+from opinions_app.users import users_bp
+from opinions_app.opinions import opinions_bp
+from opinions_app.admin import admin_bp
+from opinions_app.access_managment import access_bp
+
+app.register_blueprint(users_bp)
+app.register_blueprint(opinions_bp)
+app.register_blueprint(admin_bp)
+app.register_blueprint(access_bp)

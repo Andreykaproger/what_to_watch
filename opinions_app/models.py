@@ -10,8 +10,11 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    is_active = db.Column(db.Boolean, default=True)
+    block_reason = db.Column(db.Text, nullable=True)
+    blocked_at = db.Column(db.DateTime)
 
-    role = db.Column(db.String(20), default='user')
+    role = db.Column(db.String(20), default='users')
 
     opinion = db.relationship('Opinion', backref='author', lazy=True)
 
@@ -33,6 +36,9 @@ class Opinion(db.Model):
     source = db.Column(db.String(256))
     timestamp = db.Column(db.DateTime, index = True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    rejection_reason = db.Column(db.Text, nullable=True)
+    moderated_at = db.Column(db.DateTime)
 
     def to_dict(self):
         return dict(
@@ -48,3 +54,9 @@ class Opinion(db.Model):
         for field in ['tittle','text','source', 'user_id']:
             if field in data:
                 setattr(self, field, data[field])
+
+class AdminLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    action = db.Column(db.String(255))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    admin_id = db.Column(db.Integer, db.ForeignKey('users.id'))

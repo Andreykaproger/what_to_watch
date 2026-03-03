@@ -7,9 +7,13 @@
     <div class="profile-header">
         <h2>Профиль пользователя: {{ user.username }}</h2>
         <p>Email: {{ user.email }}</p>
-<!--        {% if user.role %}-->
-<!--            <p>Роль: <strong>{{ user.role }}</strong></p>-->
-<!--        {% endif %}-->
+        {% if user.is_admin() %}
+            <p>
+                <a class="nav-link" href="{{ url_for('admin.admin_panel_dashboard_view') }}">
+                    Перейти в панель администратора
+                </a>
+            </p>
+        {% endif %}
         <hr>
     </div>
     {% if current_user.is_authenticated and current_user.id == user.id or current_user.is_admin()%}
@@ -27,7 +31,7 @@
                 {{ opinion.tittle }}
                 <br>
                 <small class="text-muted">«{{ opinion.text | truncate(100) }}»
-                  <a href="{{ url_for('opinion_view', id=opinion.id) }}"
+                  <a href="{{ url_for('opinions.opinion_view', id=opinion.id) }}"
                     class="text-muted">
                       Читать далее
                   </a>
@@ -36,12 +40,12 @@
                 <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
                 {% if owner %}
                   <br>
-                  <a href="{{ url_for('redact_opinion_view', id=opinion.id) }}"
+                  <a href="{{ url_for('opinions.redact_opinion_view', id=opinion.id) }}"
                     class="text-muted">
                       Редактировать мнение
                   </a>
                   <br>
-                  <a href="{{ url_for('delete_opinion_view', id=opinion.id) }}"
+                  <a href="{{ url_for('opinions.delete_opinion_view', id=opinion.id) }}"
                     class="text-muted">
                       Удалить мнение
                   </a>

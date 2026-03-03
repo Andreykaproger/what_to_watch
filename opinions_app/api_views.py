@@ -2,7 +2,7 @@ from flask import jsonify,request
 
 from . import app,db
 from .models import Opinion
-from .views import random_opinion
+from .opinions.routes import random_opinion
 from .error_handlers import InvalidAPIUsage
 
 @app.route('/api/opinions/', methods=['GET'])

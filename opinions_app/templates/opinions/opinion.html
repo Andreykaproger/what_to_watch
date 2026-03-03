@@ -15,17 +15,17 @@
         </p>
         <p>
           Ссылка для друзей:
-          <a href="{{ url_for('opinion_view', id=opinion.id, _exteranl = True) }}">{{ url_for('opinion_view', id=opinion.id, _external=True) }}</a>
+          <a href="{{ url_for('opinions.opinion_view', id=opinion.id, _exteranl = True) }}">{{ url_for('opinions.opinion_view', id=opinion.id, _external=True) }}</a>
         </p>
         <p>
-          Автор мнения: <a href="{{ url_for('user_profile_view', username=opinion.author.username) }}"> {{ opinion.author.username }} </a>
+          Автор мнения: <a href="{{ url_for('users.user_profile_view', username=opinion.author.username) }}"> {{ opinion.author.username }} </a>
         </p>
         {% if current_user.is_authenticated and opinion.user_id == current_user.id %}
           <p>
-            <a style="color: blue" href="{{ url_for('redact_opinion_view', id=opinion.id) }}"> Редактировать мнение </a>
+            <a style="color: blue" href="{{ url_for('opinions.redact_opinion_view', id=opinion.id) }}"> Редактировать мнение </a>
           </p>
           <p>
-            <a style="color: red" href="{{ url_for('redact_opinion_view', id=opinion.id) }}"> Удалить мнение </a>
+            <a style="color: red" href="{{ url_for('opinions.delete_opinion_view', id=opinion.id) }}"> Удалить мнение </a>
           </p>
         {% endif %}
       </div>
