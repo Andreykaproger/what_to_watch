@@ -6,28 +6,25 @@
 <div class="container mt-4">
 
     <div class="profile-header">
-        <h4>Отклонение мнения</h4>
+        <h4> Блокировка пользователя</h4>
         <hr>
     </div>
 
     <div class="list-group-item mb-3">
-        <strong>{{ opinion.title }}</strong>
+        <strong>{{ user.username }}</strong>
         <br>
         <small class="text-muted">
-            {{ opinion.text }}
+            {{ user.email }}
         </small>
         <br>
-        <small class="text-muted">
-            Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}
-        </small>
     </div>
 
     <form method="POST"
-          action="{{ url_for('admin.reject_opinion_confirm', id=opinion.id) }}">
+          action="{{ url_for('admin.blocked_user', id=user.id) }}">
 
         <div class="mb-3">
             <label class="form-label">
-                Укажите причину отказа:
+                Укажите причину блокировки:
             </label>
             <textarea name="reason"
                       class="form-control"
@@ -37,14 +34,13 @@
 
         <button type="submit"
                 class="btn btn-danger">
-            Подтвердить отказ
+            Заблокировать пользователя
         </button>
 
-        <a href="{{ url_for('admin.pending_opinions_view') }}"
+        <a href="{{ url_for('admin.users_list_view') }}"
            class="btn btn-secondary">
             Отмена
         </a>
-
     </form>
 
 </div>

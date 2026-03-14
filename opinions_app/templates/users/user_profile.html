@@ -3,60 +3,126 @@
 {% block title %}Профиль {{ user.username }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="profile-header">
-        <h2>Профиль пользователя: {{ user.username }}</h2>
-        <p>Email: {{ user.email }}</p>
-        {% if user.is_admin() %}
-            <p>
-                <a class="nav-link" href="{{ url_for('admin.admin_panel_dashboard_view') }}">
-                    Перейти в панель администратора
-                </a>
-            </p>
-        {% endif %}
-        <hr>
-    </div>
-    {% if current_user.is_authenticated and current_user.id == user.id or current_user.is_admin()%}
-      {% set owner = True %}
-      <h4>Мои мнения</h4>
-    {% else %}
-      {% set owner = False %}
-      <h4>Все мнения пользователя</h4>
-    {% endif %}
+<div class="profile-container">
 
-    {% if opinions %}
-        <ul class="list-group">
-        {% for opinion in opinions %}
-            <li class="list-group-item">
-                {{ opinion.tittle }}
-                <br>
-                <small class="text-muted">«{{ opinion.text | truncate(100) }}»
-                  <a href="{{ url_for('opinions.opinion_view', id=opinion.id) }}"
-                    class="text-muted">
-                      Читать далее
-                  </a>
-                </small>
-                <br>
-                <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
-                {% if owner %}
-                  <br>
-                  <a href="{{ url_for('opinions.redact_opinion_view', id=opinion.id) }}"
-                    class="text-muted">
-                      Редактировать мнение
-                  </a>
-                  <br>
-                  <a href="{{ url_for('opinions.delete_opinion_view', id=opinion.id) }}"
-                    class="text-muted">
-                      Удалить мнение
-                  </a>
-                {% endif %}
-                <br>
-                <small class="text-muted">  </small>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Пока нет мнений</p>
-    {% endif %}
+    <div class="profile-card">
+        <div class="profile-avatar">
+            {{ user.username[0]|upper }}
+        </div>
+
+        <div class="profile-info">
+            <h2>{{ user.username }}</h2>
+            <p class="profile-email">{{ user.email }}</p>
+
+            {% if user.is_admin() %}
+            <div class="opinion-actions">
+                <span class="badge badge-admin">Администратор</span>
+                <a href="{{ url_for('admin.admin_panel_dashboard_view') }}"
+                   class="btn btn-primary">
+                    Панель администратора
+                </a>
+            </div>
+            {% endif %}
+
+            {% if not user.is_active %}
+                <div class="badge badge-blocked">
+                    🚫 Заблокирован
+                    {% if user.block_reason %}
+                        <div class="block-reason">
+                            Причина: {{ user.block_reason }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="opinions-section">
+        {% if current_user.is_authenticated and (current_user.id == user.id) %}
+            {% set owner = True %}
+            <h3>Мои мнения</h3>
+        {% else %}
+            {% if current_user.is_admin() %}
+                {% set root = True %}
+            {% endif %}
+            <h3>Все мнения пользователя</h3>
+        {% endif %}
+
+        {% if opinions %}
+            {% for opinion in opinions.items %}
+                <div class="opinion-card">
+                    {% if owner or root %}
+                        {% if opinion.status == 'pending' %}
+                            <div class="opinion-status-profile status-pending">
+                                ● На модерации
+                            </div>
+                        {% elif opinion.status == 'rejected' %}
+                            <div class="opinion-status-profile status-rejected">
+                                ● Не опубликовано
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <div class="opinion-content">
+                        <h4>{{ opinion.title }}</h4>
+                        <p>
+                            {{ opinion.text | truncate(150) }}
+                            <a href="{{ url_for('opinions.opinion_view', id=opinion.id) }}"
+                               class="btn btn-primary">
+                                Читать далее →
+                            </a>
+                        </p>
+                        <span class="opinion-date">
+                            {{ opinion.timestamp.strftime('%d.%m.%Y %H:%M') }}
+                        </span>
+                    </div>
+
+                    {% if owner or root %}
+                    <div class="opinion-actions">
+                        {% if owner %}
+                                <a href="{{ url_for('opinions.redact_opinion_view', id=opinion.id) }}"
+                                   class="btn btn-dark">
+                                    Редактировать
+                                </a>
+                        {% endif %}
+                            <form action="{{ url_for('opinions.delete_opinion', id=opinion.id) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Вы уверены, что хотите удалить мнение?');">
+                                <button type="submit" class="btn-delete">
+                                    Удалить
+                                </button>
+                            </form>
+                    </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if opinions.pages > 1 %}
+                <div class="pagination-wrapper">
+                    {% if opinions.has_prev %}
+                        <a href="{{ url_for('users.user_profile_view',
+                                            username=user.username,
+                                            page=opinions.prev_num) }}"
+                           class="pagination-btn">
+                            ← Назад
+                        </a>
+                    {% endif %}
+
+                    <span class="pagination-info">
+                        Страница {{ opinions.page }} из {{ opinions.pages }}
+                    </span>
+
+                    {% if opinions.has_next %}
+                        <a href="{{ url_for('users.user_profile_view',
+                                            username=user.username,
+                                            page=opinions.next_num) }}"
+                           class="pagination-btn">
+                            Вперёд →
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="no-opinions">Пока нет мнений</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

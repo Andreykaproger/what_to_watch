@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Список пользователей WTW{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+      <h4>Список пользователей сайта</h4>
+
+    {% if users_list %}
+        <ul class="list-group">
+        {% for user in users_list %}
+            <li class="list-group-item">
+                {{ user.username }} Id:{{ user.id }}
+                <p> E-Mail: {{ user.email }} </p>
+                <br>
+                <p> Причина блокировки: {{ user.block_reason }} </p>
+                <br>
+                <small>
+                  <a href="{{ url_for('users.user_profile_view', username=user.username) }}"
+                    class="text-muted">
+                      Открыть мнения пользователя
+                  </a>
+                </small>
+                  <br>
+                  <form method="POST"
+                        action="{{ url_for('admin.unblocked_user', id=user.id) }}"
+                        id="bform"></form>
+                <button type="submit"
+                    class="button px-1 py-1 btn" form="bform">
+                        Разблокировать пользователя
+                </button>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Заблокированных пользователей нет</p>
+    {% endif %}
+</div>
+{% endblock %}

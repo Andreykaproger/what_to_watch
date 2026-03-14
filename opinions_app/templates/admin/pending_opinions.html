@@ -19,7 +19,7 @@
         <ul class="list-group">
         {% for opinion in pending_opinions %}
             <li class="list-group-item">
-                {{ opinion.tittle }}
+                {{ opinion.title }}
                 <br>
                 <small class="text-muted">«{{ opinion.text | truncate(100) }}»
                   <a href="{{ url_for('opinions.opinion_view', id=opinion.id) }}"
@@ -30,15 +30,15 @@
                 <br>
                 <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
                   <br>
-                  <a href="{{ url_for('admin.accept_opinion', id=opinion.id) }}"
+                  <a href="{{ url_for('admin.approve_opinion', id=opinion.id) }}"
                     class="text-muted">
                       Опубликовать мнение
                   </a>
                   <br>
-                    <a href="{{ url_for('admin.reject_opinion_view', id=opinion.id) }}"
+                  <a href="{{ url_for('admin.reject_opinion_view', id=opinion.id) }}"
                        class="text-danger">
                         Отклонить мнение
-                    </a>
+                  </a>
                 <br>
                 <small class="text-muted">  </small>
             </li>

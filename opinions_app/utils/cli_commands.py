@@ -1,8 +1,9 @@
 import csv
 import click
 
-from . import app, db
-from .models import Opinion
+from opinions_app import app, db
+from opinions_app.models import Opinion
+from opinions_app.utils.token_cleanup import cleanup_expired_tokens
 
 @app.cli.command('load_opinions')
 def load_opinions_command():
@@ -28,3 +29,13 @@ def delete_opinions_command():
     db.session.commit()
     counter += 1
     click.echo(f'Удалено мнений: {counter}')
+
+
+@app.cli.command('cleanup-tokens')
+def cleanup_tokens_command():
+    """Функция удаления старых токенов из базы данных."""
+
+    count = cleanup_expired_tokens()
+    click.echo(f"Старые токены удалены из базы данных (count: {count})")
+
+

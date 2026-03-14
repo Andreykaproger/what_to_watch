@@ -12,18 +12,17 @@
             <li class="list-group-item">
                 {{ user.username }} Id:{{ user.id }}
                 <br>
+                E-Mail: {{ user.email }}
+                <br>
                 <small>
                   <a href="{{ url_for('users.user_profile_view', username=user.username) }}"
                     class="text-muted">
                       Открыть мнения пользователя
                   </a>
-                </small>
                 <br>
-                <small class="text-muted">Добавлено: {{ user.email }}</small>
-
-                  <br>
-                  <a href="{{ url_for('admin.blocked_user', id=user.id) }}"
-                    class="text-muted">
+                </small>
+                  <a href="{{ url_for('admin.blocked_user_view', id=user.id) }}"
+                    class="text-danger">
                       Заблокировать пользователя
                   </a>
                 <br>

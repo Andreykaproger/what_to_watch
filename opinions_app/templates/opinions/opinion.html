@@ -4,7 +4,24 @@
 <main>
   <section class="container my-5">
     <div class="row">
-      <h1>{{ opinion.tittle }}</h1>
+      <h1>{{ opinion.title }}</h1>
+      {% if opinion.status == "pending" %}
+        <div class="opinion-status pending">
+            <span class="status-dot"></span>
+              Мнение на модерации
+        </div>
+      {% endif %}
+
+      {% if opinion.status == "rejected" %}
+        <div class="opinion-status rejected">
+            ❌ Мнение не опубликовано
+            {% if opinion.rejection_reason %}
+                <div class="reject-reason">
+                    Причина: {{ opinion.rejection_reason }}
+                </div>
+            {% endif %}
+        </div>
+      {% endif %}
       <div class="col-12 col-lg-7 my-5">
         <p>{{ opinion.text }}</p>
         <p>
@@ -15,7 +32,7 @@
         </p>
         <p>
           Ссылка для друзей:
-          <a href="{{ url_for('opinions.opinion_view', id=opinion.id, _exteranl = True) }}">{{ url_for('opinions.opinion_view', id=opinion.id, _external=True) }}</a>
+          <a href="{{ url_for('opinions.opinion_view', id=opinion.id, _external=True) }}">{{ url_for('opinions.opinion_view', id=opinion.id, _external=True) }}</a>
         </p>
         <p>
           Автор мнения: <a href="{{ url_for('users.user_profile_view', username=opinion.author.username) }}"> {{ opinion.author.username }} </a>
@@ -24,9 +41,11 @@
           <p>
             <a style="color: blue" href="{{ url_for('opinions.redact_opinion_view', id=opinion.id) }}"> Редактировать мнение </a>
           </p>
-          <p>
-            <a style="color: red" href="{{ url_for('opinions.delete_opinion_view', id=opinion.id) }}"> Удалить мнение </a>
-          </p>
+        <form action=" {{ url_for('opinions.delete_opinion', id=opinion.id) }} " method="POST" id="dform"></form>
+        <button type="submit"
+                class="btn btn-danger" form="dform">
+          Удалить мнение
+        </button>
         {% endif %}
       </div>
       <div class="col-12 col-lg-5">

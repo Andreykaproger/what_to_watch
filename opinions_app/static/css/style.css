@@ -77,3 +77,255 @@ textarea {
         margin: 0 auto;
     }
 }
+
+/* ===== PROFILE PAGE ===== */
+
+.profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    background: #FFF;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    background-color: #00D6D6;
+    color: #FFF;
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 25px;
+}
+
+.profile-info h2 {
+    margin: 0;
+}
+
+.profile-email {
+    font-size: 16px;
+    color: #8E8E8E;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.badge-admin {
+    background-color: #272727;
+    color: #FFF;
+}
+
+.badge-blocked {
+    background-color: #ff4d4d;
+    color: #FFF;
+    margin-top: 15px;
+    padding: 10px 15px;
+}
+
+.block-reason {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.opinions-section h3 {
+    margin-bottom: 25px;
+}
+
+.opinion-card {
+    background: #FFF;
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.opinion-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+}
+
+.opinion-content h4 {
+    margin-top: 0;
+}
+
+.opinion-date {
+    font-size: 14px;
+    color: #8E8E8E;
+}
+
+.opinion-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.btn-delete {
+    background-color: #ff4d4d;
+    border: none;
+    color: #FFF;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    background-color: #e60000;
+}
+
+.no-opinions {
+    font-size: 18px;
+    color: #8E8E8E;
+}
+
+/* ===== PAGINATION ===== */
+
+.pagination-wrapper {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.pagination-btn {
+    background-color: #00D6D6;
+    color: #FFF;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.pagination-btn:hover {
+    background-color: #00b3b3;
+    color: #FFF;
+}
+
+.pagination-info {
+    font-size: 16px;
+    color: #8E8E8E;
+}
+
+/* ===== UNIVERSAL BUTTONS ===== */
+
+.btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+/* Основная бирюзовая */
+.btn-primary {
+    background-color: #00D6D6;
+    color: #FFF;
+}
+
+.btn-primary:hover {
+    background-color: #00b3b3;
+    transform: translateY(-3px);
+}
+
+/* Тёмная */
+.btn-dark {
+    background-color: #272727;
+    color: #FFF;
+}
+
+.btn-dark:hover {
+    background-color: #000;
+    transform: translateY(-3px);
+}
+
+/* ===== OPINION STATUS ===== */
+
+.opinion-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* статус "на модерации" */
+
+.opinion-status.pending {
+    color: #FDD017;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #FDD017;
+}
+
+/* статус отклонено */
+
+.opinion-status.rejected {
+    color: #d9534f;
+    background: #fff3f3;
+    padding: 10px 15px;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.reject-reason {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* статус мнения */
+
+.opinion-card{
+    position: relative;
+}
+
+.opinion-status-profile{
+    position: absolute;
+    top: 12px;
+    right: 14px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+/* на модерации */
+
+.status-pending{
+    color: #FDD017;
+}
+
+/* отклонено */
+
+.status-rejected{
+    color: #E74C3C;
+}

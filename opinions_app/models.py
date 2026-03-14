@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     block_reason = db.Column(db.Text, nullable=True)
     blocked_at = db.Column(db.DateTime)
 
-    role = db.Column(db.String(20), default='users')
+    role = db.Column(db.String(20), default='user')
 
     opinion = db.relationship('Opinion', backref='author', lazy=True)
 
@@ -27,11 +27,20 @@ class User(db.Model, UserMixin):
     def is_admin(self):
         return self.role == 'admin'
 
+    def to_dict(self):
+        return dict(
+            id = self.id,
+            username = self.username,
+            email = self.email,
+            is_active = self.is_active,
+            role = self.role,
+        )
+
 
 class Opinion(db.Model):
     """Модель БД мнений о фильмах"""
     id = db.Column(db.Integer, primary_key=True)
-    tittle = db.Column(db.String(128), nullable=False)
+    title = db.Column(db.String(128), nullable=False)
     text = db.Column(db.Text, unique=True, nullable=False)
     source = db.Column(db.String(256))
     timestamp = db.Column(db.DateTime, index = True, default=datetime.utcnow)
@@ -43,20 +52,50 @@ class Opinion(db.Model):
     def to_dict(self):
         return dict(
             id = self.id,
-            tittle = self.tittle,
+            title = self.title,
             text = self.text,
             source = self.source,
             timestamp = self.timestamp,
-            user_id = self.user_id
+            user_id = self.user_id,
+            status = self.status,
         )
 
     def from_dict(self, data):
-        for field in ['tittle','text','source', 'user_id']:
+        for field in ['title','text','source', 'user_id']:
             if field in data:
                 setattr(self, field, data[field])
+
+    @staticmethod
+    def visible():
+        return (Opinion.query
+        .join(User)
+        .filter(
+            Opinion.status == 'approved',
+            User.is_active == True
+        )
+    )
+
+    def is_visible_to(self, viewer):
+        if (
+                viewer.is_authenticated and
+                (viewer.is_admin() or
+                self.user_id != viewer.id)
+        ):
+            return True
+        if not self.status == "rejected":
+            return True
+        return False
 
 class AdminLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    admin_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    admin_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class TokenBlockList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), nullable=False, index=True)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+
