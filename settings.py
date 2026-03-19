@@ -10,3 +10,10 @@ class Config(object):
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
     OPENAPI_VERSION="3.0.3"
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SECRET_KEY = "secret_key"
+    JWT_SECRET_KEY = "ndfgiln45tnjkfdsngkjnvl3948u97cxjnmkl"
+    WTF_CSRF_ENABLED = False

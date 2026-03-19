@@ -7,7 +7,6 @@
       <h4>Список пользователей сайта</h4>
 
     {% if users_list %}
-        <ul class="list-group">
         {% for user in users_list %}
             <li class="list-group-item">
                 {{ user.username }} Id:{{ user.id }}
@@ -29,9 +28,32 @@
                 <small class="text-muted">  </small>
             </li>
         {% endfor %}
-        </ul>
+        {% if users_list.pages > 1 %}
+            <div class="pagination-wrapper">
+                {% if users_list.has_prev %}
+                    <a href="{{ url_for('admin.users_list_view',
+                                        page=users_list.prev_num) }}"
+                       class="pagination-btn">
+                        ← Назад
+                    </a>
+                {% endif %}
+
+                <span class="pagination-info">
+                    Страница {{ users_list.page }} из {{ users_list.pages }}
+                </span>
+
+                {% if users_list.has_next %}
+                    <a href="{{ url_for('admin.users_list_view',
+                                        page=users_list.next_num) }}"
+                       class="pagination-btn">
+                        Вперёд →
+                    </a>
+                {% endif %}
+        {% endif %}
+        </div>
     {% else %}
         <p>Пока пользователей нет</p>
     {% endif %}
 </div>
+
 {% endblock %}

@@ -31,7 +31,30 @@
                 </button>
             </li>
         {% endfor %}
-        </ul>
+        {% if users_list.pages > 1 %}
+            <div class="pagination-wrapper">
+                {% if users_list.has_prev %}
+                    <a href="{{ url_for('admin.blocked_users_list_view',
+                                        page=users_list.prev_num) }}"
+                       class="pagination-btn">
+                        ← Назад
+                    </a>
+                {% endif %}
+
+                <span class="pagination-info">
+                    Страница {{ users_list.page }} из {{ users_list.pages }}
+                </span>
+
+                {% if users_list.has_next %}
+                    <a href="{{ url_for('admin.blocked_users_list_view',
+                                        page=users_list.next_num) }}"
+                       class="pagination-btn">
+                        Вперёд →
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+
     {% else %}
         <p>Заблокированных пользователей нет</p>
     {% endif %}

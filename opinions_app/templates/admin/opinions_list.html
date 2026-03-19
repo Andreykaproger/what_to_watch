@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Модерация мнений {% endblock %}
+{% block title %} Мнения WHW {% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -12,12 +12,11 @@
             </p>
         <hr>
     </div>
-      <h4> Все мнения, ожидающие подтверждения </h4>
+      <h4> Все мнения, опубликованные на сайте </h4>
 
-
-    {% if pending_opinions %}
-        <ul class="list-group">
-        {% for opinion in pending_opinions %}
+    <div class="opinions-section">
+    {% if opinions %}
+        {% for opinion in opinions.items %}
             <li class="list-group-item">
                 {{ opinion.title }}
                 <br>
@@ -29,41 +28,32 @@
                 </small>
                 <br>
                 <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
-                    <form method="POST"
-                        action="{{ url_for('admin.approve_opinion', id=opinion.id) }}">
-                        <button type="submit"
-                                class="button px-1 py-1 btn">
-                            Опубликовать мнение
-                        </button>
-                    </form>
-                    <br>
-                    <form method="GET"
-                        action="{{ url_for('admin.reject_opinion_view', id=opinion.id) }}">
-                        <button type="submit"
-                                class="btn btn-danger">
-                            Отклонить мнение
-                        </button>
-                    </form>
+                  <br>
+                  <a href="{{ url_for('admin.reject_opinion_view', id=opinion.id) }}"
+                       class="text-danger">
+                        Отклонить мнение
+                  </a>
+                <br>
                 <small class="text-muted">  </small>
             </li>
         {% endfor %}
-        {% if pending_opinions.pages > 1 %}
+        {% if opinions.pages > 1 %}
             <div class="pagination-wrapper">
-                {% if pending_opinions.has_prev %}
-                    <a href="{{ url_for('admin.pending_opinions_view',
-                                        page=pending_opinions.prev_num) }}"
+                {% if opinions.has_prev %}
+                    <a href="{{ url_for('admin.opinions_list_view',
+                                        page=opinions.prev_num) }}"
                        class="pagination-btn">
                         ← Назад
                     </a>
                 {% endif %}
 
                 <span class="pagination-info">
-                    Страница {{ pending_opinions.page }} из {{ pending_opinions.pages }}
+                    Страница {{ opinions.page }} из {{ opinions.pages }}
                 </span>
 
-                {% if pending_opinions.has_next %}
-                    <a href="{{ url_for('admin.pending_opinions_view',
-                                        page=pending_opinions.next_num) }}"
+                {% if opinions.has_next %}
+                    <a href="{{ url_for('admin.opinions_list_view',
+                                        page=opinions.next_num) }}"
                        class="pagination-btn">
                         Вперёд →
                     </a>
@@ -73,5 +63,6 @@
     {% else %}
         <p>Пока нет новых мнений</p>
     {% endif %}
+    </div>
 </div>
 {% endblock %}

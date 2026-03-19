@@ -14,5 +14,6 @@
   <hr>
   <p> <a href="{{ url_for('admin.opinions_list_view') }}"> Количество опубликованных мнений: {{ opinions_count }} </a> </p>
   <p> <a href="{{ url_for('admin.pending_opinions_view') }}"> Количество мнений, ожидающих подтверждения: {{ pending_opinions }} </a> </p>
+  <p> <a href="{{ url_for('admin.rejected_opinions_view') }}"> Количество отклоненных мнений: {{ rejected_opinions }} </a> </p>
 </div>
 {% endblock %}

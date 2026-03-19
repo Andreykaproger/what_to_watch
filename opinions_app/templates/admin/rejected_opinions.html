@@ -12,12 +12,12 @@
             </p>
         <hr>
     </div>
-      <h4> Все мнения, ожидающие подтверждения </h4>
+      <h4> Все отклоненные мнения </h4>
 
 
-    {% if pending_opinions %}
+    {% if opinions %}
         <ul class="list-group">
-        {% for opinion in pending_opinions %}
+        {% for opinion in opinions %}
             <li class="list-group-item">
                 {{ opinion.title }}
                 <br>
@@ -28,6 +28,10 @@
                   </a>
                 </small>
                 <br>
+                Причина блокировки: {{ opinion.rejection_reason }}
+                <br>
+                Время блокировки: {{ opinion.moderated_at.strftime('%d-%m-%Y %H:%M') }}
+                <br>
                 <small class="text-muted">Добавлено: {{ opinion.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
                     <form method="POST"
                         action="{{ url_for('admin.approve_opinion', id=opinion.id) }}">
@@ -36,40 +40,32 @@
                             Опубликовать мнение
                         </button>
                     </form>
-                    <br>
-                    <form method="GET"
-                        action="{{ url_for('admin.reject_opinion_view', id=opinion.id) }}">
-                        <button type="submit"
-                                class="btn btn-danger">
-                            Отклонить мнение
-                        </button>
-                    </form>
                 <small class="text-muted">  </small>
             </li>
         {% endfor %}
-        {% if pending_opinions.pages > 1 %}
+        {% if opinions.pages > 1 %}
             <div class="pagination-wrapper">
                 {% if pending_opinions.has_prev %}
-                    <a href="{{ url_for('admin.pending_opinions_view',
-                                        page=pending_opinions.prev_num) }}"
+                    <a href="{{ url_for('admin.rejected_opinions_view',
+                                        page=opinions.prev_num) }}"
                        class="pagination-btn">
                         ← Назад
                     </a>
                 {% endif %}
 
                 <span class="pagination-info">
-                    Страница {{ pending_opinions.page }} из {{ pending_opinions.pages }}
+                    Страница {{ opinions.page }} из {{ opinions.pages }}
                 </span>
 
                 {% if pending_opinions.has_next %}
-                    <a href="{{ url_for('admin.pending_opinions_view',
-                                        page=pending_opinions.next_num) }}"
+                    <a href="{{ url_for('admin.rejected_opinions_view',
+                                        page=opinions.next_num) }}"
                        class="pagination-btn">
                         Вперёд →
                     </a>
-                {% endif %}
-            </div>
         {% endif %}
+    </div>
+{% endif %}
     {% else %}
         <p>Пока нет новых мнений</p>
     {% endif %}

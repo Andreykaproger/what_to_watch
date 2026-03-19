@@ -41,11 +41,15 @@
           <p>
             <a style="color: blue" href="{{ url_for('opinions.redact_opinion_view', id=opinion.id) }}"> Редактировать мнение </a>
           </p>
-        <form action=" {{ url_for('opinions.delete_opinion', id=opinion.id) }} " method="POST" id="dform"></form>
+        <form action=" {{ url_for('opinions.delete_opinion', id=opinion.id) }}"
+              method="POST"
+              id="dform"
+              onsubmit="return confirm('Вы уверены, что хотите удалить мнение?');">
         <button type="submit"
-                class="btn btn-danger" form="dform">
+                class="btn btn-danger">
           Удалить мнение
         </button>
+        </form>
         {% endif %}
       </div>
       <div class="col-12 col-lg-5">
